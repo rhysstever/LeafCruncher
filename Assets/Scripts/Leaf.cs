@@ -19,7 +19,10 @@ public class Leaf : MonoBehaviour
 
 	private void OnMouseDown()
 	{
-        AudioManager.instance.PlayRandomClip();
+        // Count the leaf being crunched
+        LeafManager.instance.LeafCrunched();
+
+        // Destroy the leaf
         Destroy(gameObject);
     }
 }

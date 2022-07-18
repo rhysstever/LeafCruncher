@@ -24,8 +24,11 @@ public class LeafManager : MonoBehaviour
 
     [SerializeField]
     private GameObject leafPrefab, leafParent;
+    private Sprite[] leafSprites;
 
-    public int leafCount;
+    private int leafSpawnCount;
+    private int leavesLeftCount;
+    private int leafCrunchCount;
 
     private float xBounds = 8.5f;
     private float yBounds = 4.65f;
@@ -33,20 +36,29 @@ public class LeafManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Load Leaf Sprites
+        leafSprites = Resources.LoadAll<Sprite>("Images/Leaves");
+
         CreateLeaves();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
+    /// <summary>
+    /// Fills the screen with leaves
+    /// </summary>
     private void CreateLeaves()
 	{
-        for(int i = 0; i < leafCount; i++)
+        leafSpawnCount += 100;
+        leavesLeftCount = leafSpawnCount;
+
+        for(int i = 0; i < leafSpawnCount; i++)
         {
-            // Get a random position
+            // Get a random position within bounds
             Vector3 randPos = new Vector3(
                 Random.Range(-xBounds, xBounds),
                 Random.Range(-yBounds, yBounds),
@@ -55,6 +67,40 @@ public class LeafManager : MonoBehaviour
             // Create the new leaf
             GameObject newLeaf = Instantiate(leafPrefab, randPos, Quaternion.identity, leafParent.transform);
             newLeaf.name = "Leaf" + i;
+
+            // Set the leaf's sprite to a random leaf
+            int randLeafSpriteIndex = Random.Range(0, leafSprites.Length);
+            newLeaf.GetComponent<SpriteRenderer>().sprite = leafSprites[randLeafSpriteIndex];
+
+            // Set the leaf's sorting layer to the leaf layer, so it is in front of the background
+            newLeaf.GetComponent<SpriteRenderer>().sortingLayerName = "Leaf";
+
+            // Randomly rotate the leaf
+            int randDegrees = Random.Range(0, 360);
+            newLeaf.transform.localEulerAngles = new Vector3(0.0f, 0.0f, randDegrees);
+
+            // Randomly flip the leaf
+            if(Random.Range(0.0f, 1.0f) > 0.5f)
+                newLeaf.GetComponent<SpriteRenderer>().flipX = true;
         }
-	}
+    }
+
+    /// <summary>
+    /// Logic for after a leaf has been crunched
+    /// </summary>
+    public void LeafCrunched()
+	{
+        // Play a crunching sound
+        AudioManager.instance.PlayRandomClip();
+
+        // Count the lead being crunched
+        leavesLeftCount--;
+        leafCrunchCount++;
+
+        UIManager.instance.UpdateLeavesCrunchedText(leafCrunchCount);
+
+        // Repopulate the screen if all leaves have been crunched
+        if(leavesLeftCount == 0)
+            CreateLeaves();
+    }
 }
