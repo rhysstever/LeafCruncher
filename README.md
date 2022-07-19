@@ -1,5 +1,10 @@
 # Leaf Cruncher
-A leaf crunching simulator. 
+A game of crunching leaves
+
+## How to Play
+- Go to http://rhysstever.me/LeafCruncher/
+- Click on a leaf to crunch it
+- That's it!
 
 ## About
 Hear the satisfying sound of crunching leaves as you crunch them one by one! Inspired by my partner who loves to crunch leaves when we go for walks. I hope you can continue your love for crunchy leaves, even when it is no longer autumn. 
