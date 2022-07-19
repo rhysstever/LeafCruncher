@@ -2,7 +2,7 @@
 A game of crunching leaves
 
 ## How to Play
-- Go to http://rhysstever.me/LeafCruncher/
+- Go to http://rhysstever.me/LeafCruncher/, make sure to maximize the game
 - Click on a leaf to crunch it
 - That's it!
 
